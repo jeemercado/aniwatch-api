@@ -5,7 +5,7 @@ steps:
 
   - name: node:$_NODE_VERSION
     entrypoint: yarn
-    args: ['run', 'build']
+    args: ['run', 'build:server']
 
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'create-env', 'dist/.env']
