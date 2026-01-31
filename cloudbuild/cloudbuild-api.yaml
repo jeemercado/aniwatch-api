@@ -30,7 +30,7 @@ steps:
         '--memory=4G',
         '--cpu=4',
       ]
-    # dir: 'dist'
+    dir: 'dist'
 
 timeout: 1800s
 options:
