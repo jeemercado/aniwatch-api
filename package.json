@@ -5,13 +5,12 @@
     "main": "dist/src/server.js",
     "type": "module",
     "scripts": {
-        "start": "node dist/src/server.js",
+        "start": "node src/server.js",
         "dev": "tsx watch src/server.ts",
         "create-env": "printenv > ",
         "build": "tsc",
         "buildnstart": "tsc && node dist/src/server.js",
         "vercel-build": "echo hello",
-        "prepare": "node .husky/install.mjs",
         "test": "vitest run --config vitest.config.ts",
         "healthcheck": "curl -f http://localhost:4000/health",
         "typecheck": "tsc --noEmit",
@@ -50,7 +49,6 @@
     },
     "devDependencies": {
         "@types/node": "^22.15.21",
-        "husky": "^9.1.7",
         "prettier": "^3.5.3",
         "tsx": "^4.19.4",
         "typescript": "^5.8.3",
