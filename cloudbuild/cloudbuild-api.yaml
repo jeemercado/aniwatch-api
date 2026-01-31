@@ -10,7 +10,6 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'create-env', 'dist/.env']
     env:
-      - 'ANIWATCH_API_PORT=${_ANIWATCH_API_PORT}'
       - 'ANIWATCH_API_WINDOW_MS=${_ANIWATCH_API_WINDOW_MS}'
       - 'ANIWATCH_API_MAX_REQS=${_ANIWATCH_API_MAX_REQS}'
       - 'ANIWATCH_API_HOSTNAME=${_ANIWATCH_API_HOSTNAME}'
