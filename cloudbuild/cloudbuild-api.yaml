@@ -1,0 +1,37 @@
+steps:
+  - name: node:$_NODE_VERSION
+    entrypoint: yarn
+    args: ['install', '--ignore-scripts']
+
+  - name: node:$_NODE_VERSION
+    entrypoint: yarn
+    args: ['run', 'build']
+
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'create-env', 'dist/apps/api/.env']
+    env:
+      - 'ANIWATCH_API_PORT=${ANIWATCH_API_PORT}'
+      - 'ANIWATCH_API_WINDOW_MS=${ANIWATCH_API_WINDOW_MS}'
+      - 'ANIWATCH_API_MAX_REQS=${ANIWATCH_API_MAX_REQS}'
+      - 'ANIWATCH_API_HOSTNAME=${ANIWATCH_API_HOSTNAME}'
+      - 'ANIWATCH_API_DEPLOYMENT_ENV=${ANIWATCH_API_DEPLOYMENT_ENV}'
+      - 'ANIWATCH_API_S_MAXAGE=${ANIWATCH_API_S_MAXAGE}'
+      - 'ANIWATCH_API_STALE_WHILE_REVALIDATE=${ANIWATCH_API_STALE_WHILE_REVALIDATE}'
+      
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      [
+        'run',
+        'deploy',
+        'api',
+        '--source',
+        '.',
+        '--region=asia-southeast1',
+        '--memory=4G',
+        '--cpu=4',
+      ]
+    # dir: 'dist'
+
+timeout: 1800s
+options:
+  logging: CLOUD_LOGGING_ONLY
