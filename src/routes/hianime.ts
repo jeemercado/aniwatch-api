@@ -5,6 +5,7 @@ import type { ServerContext } from "../config/context.js";
 
 const hianime = new HiAnime.Scraper();
 const hianimeRouter = new Hono<ServerContext>();
+const LONG_CACHE_DURATION = 60 * 60 * 12; // 12 hours
 
 // /api/v2/hianime
 hianimeRouter.get("/", (c) => c.redirect("/", 301));
@@ -16,7 +17,7 @@ hianimeRouter.get("/home", async (c) => {
     const data = await cache.getOrSet<HiAnime.ScrapedHomePage>(
         hianime.getHomePage,
         cacheConfig.key,
-        cacheConfig.duration
+        LONG_CACHE_DURATION
     );
 
     return c.json({ status: 200, data }, { status: 200 });
@@ -135,7 +136,7 @@ hianimeRouter.get("/search", async (c) => {
     const data = await cache.getOrSet<HiAnime.ScrapedAnimeSearchResult>(
         async () => hianime.search(query, pageNo, filters),
         cacheConfig.key,
-        cacheConfig.duration
+        LONG_CACHE_DURATION
     );
 
     return c.json({ status: 200, data }, { status: 200 });
@@ -163,7 +164,7 @@ hianimeRouter.get("/anime/:animeId", async (c) => {
     const data = await cache.getOrSet<HiAnime.ScrapedAnimeAboutInfo>(
         async () => hianime.getInfo(animeId),
         cacheConfig.key,
-        cacheConfig.duration
+        LONG_CACHE_DURATION
     );
 
     return c.json({ status: 200, data }, { status: 200 });
