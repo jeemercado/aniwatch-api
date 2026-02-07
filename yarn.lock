@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@consumet/extensions@^1.7.0":
+"@consumet/extensions@1.8.8":
   version "1.8.8"
-  resolved "https://registry.npmjs.org/@consumet/extensions/-/extensions-1.8.8.tgz"
+  resolved "https://registry.yarnpkg.com/@consumet/extensions/-/extensions-1.8.8.tgz#dbfbadf832aaf52e5a9dfb46897087c722200b12"
   integrity sha512-FehyOLruF/dq2AsXaoeWQEPMbPoSKOHHztDIdwpRnt8THFQKtIMY2qT27mLkmPGBnCEdK7si/Am5bkjXeGAA/Q==
   dependencies:
     ascii-url-encoder "^1.2.0"
