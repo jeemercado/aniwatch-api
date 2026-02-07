@@ -10,7 +10,7 @@
         "create-env": "printenv > ",
         "postinstall": "npx patch-package",
         "build": "echo skip",
-        "build:server": "tsc",
+        "build:server": "tsc && mkdir -p dist/patches && cp -R patches/. dist/patches/",
         "buildnstart": "tsc && node dist/src/server.js",
         "vercel-build": "echo hello",
         "test": "vitest run --config vitest.config.ts",
