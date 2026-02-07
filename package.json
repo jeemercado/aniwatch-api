@@ -8,6 +8,7 @@
         "start": "node src/server.js",
         "dev": "tsx watch src/server.ts",
         "create-env": "printenv > ",
+        "postinstall": "patch-package",
         "build": "echo skip",
         "build:server": "tsc",
         "buildnstart": "tsc && node dist/src/server.js",
@@ -38,6 +39,7 @@
     "author": "https://github.com/ghoshRitesh12",
     "license": "MIT",
     "dependencies": {
+        "@consumet/extensions": "^1.7.0",
         "@hono/node-server": "^1.14.2",
         "aniwatch": "^2.24.3",
         "dotenv": "^16.5.0",
@@ -45,6 +47,7 @@
         "hono": "^4.7.10",
         "hono-rate-limiter": "^0.4.2",
         "ioredis": "^5.6.1",
+        "patch-package": "^8.0.1",
         "pino": "^9.7.0",
         "pino-pretty": "^13.0.0",
         "swagger-ui-dist": "^5.17.14"

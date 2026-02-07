@@ -1,0 +1,50 @@
+diff --git a/node_modules/@consumet/extensions/dist/providers/manga/mangahere.js b/node_modules/@consumet/extensions/dist/providers/manga/mangahere.js
+index 0369059..9ff451d 100644
+--- a/node_modules/@consumet/extensions/dist/providers/manga/mangahere.js
++++ b/node_modules/@consumet/extensions/dist/providers/manga/mangahere.js
+@@ -67,7 +67,7 @@ class MangaHere extends models_1.MangaParser {
+             try {
+                 const { data } = await this.client.get(url, {
+                     headers: {
+-                        cookie: 'isAdult=1',
++                        cookie: 'isAdult=1;noshowdanmaku=1;showdanmaku=1',
+                     },
+                 });
+                 const $ = (0, cheerio_1.load)(data);
+@@ -83,10 +83,25 @@ class MangaHere extends models_1.MangaParser {
+                     const se = html.indexOf('</script>', ss);
+                     const s = html.substring(ss, se);
+                     const ds = (0, utils_1.safeUnpack)(s);
+-                    const urls = ds.split("['")[1].split("']")[0].split("','");
+-                    urls.map((url, i) => chapterPages.push({
++                    const urls = [];
++                    const newImgsMatch = ds === null || ds === void 0 ? void 0 : ds.match(/var\s+newImgs\s*=\s*\[(.*?)\]\s*;/s);
++                    if (newImgsMatch === null || newImgsMatch === void 0 ? void 0 : newImgsMatch[1]) {
++                        const urlPattern = /\\?['"]((?:https?:)?\/\/[^'"]+)\\?['"]/g;
++                        let matched;
++                        while ((matched = urlPattern.exec(newImgsMatch[1])) !== null) {
++                            urls.push(matched[1].replace(/\\+$/g, ''));
++                        }
++                    }
++                    if (!urls.length) {
++                        const fallbackMatches = (ds === null || ds === void 0 ? void 0 : ds.match(/((?:https?:)?\/\/[^\\'"\s]+?\.(?:jpg|jpeg|png|webp|avif))/gi)) || [];
++                        urls.push(...fallbackMatches);
++                    }
++                    urls
++                        .map((imgUrl) => imgUrl.startsWith('//') ? `https:${imgUrl}` : imgUrl)
++                        .filter((imgUrl) => /\.(jpg|jpeg|png|webp|avif)(\?|$)/i.test(imgUrl))
++                        .forEach((imgUrl, i) => chapterPages.push({
+                         page: i,
+-                        img: `https:${url}`,
++                        img: imgUrl,
+                         headerForImage: { Referer: url },
+                     }));
+                 }
+@@ -131,6 +146,7 @@ class MangaHere extends models_1.MangaParser {
+                 return chapterPages;
+             }
+             catch (err) {
++                console.log(err)
+                 throw new Error(err.message);
+             }
+         };

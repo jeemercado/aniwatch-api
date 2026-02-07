@@ -11,6 +11,8 @@ steps:
     args: ['run', 'create-env', 'dist/.env']
     env:
       - 'NODE_ENV=${_NODE_ENV}'
+      - 'UPDATE_LINK=${_UPDATE_LINK}'
+      - 'APP_VERSION=${_APP_VERSION}'
       - 'ANIWATCH_API_WINDOW_MS=${_ANIWATCH_API_WINDOW_MS}'
       - 'ANIWATCH_API_MAX_REQS=${_ANIWATCH_API_MAX_REQS}'
       - 'ANIWATCH_API_HOSTNAME=${_ANIWATCH_API_HOSTNAME}'

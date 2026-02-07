@@ -86,6 +86,16 @@ export const env = cleanEnv(process.env, {
         default: false,
         desc: "Enable Swagger UI at /docs and serve the OpenAPI spec in development or local environments.",
     }),
+
+    APP_VERSION: str({
+        default: "-1",
+        desc: "Application version string exposed by the version health endpoint.",
+    }),
+
+    UPDATE_LINK: str({
+        default: "",
+        desc: "Update URL exposed by the update endpoint.",
+    }),
 });
 
 function isDevEnv(): boolean {

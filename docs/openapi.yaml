@@ -74,6 +74,30 @@ paths:
                 type: string
                 example: daijoubu
 
+  /app-version:
+    get:
+      summary: App version
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 1.0.4
+
+  /update:
+    get:
+      summary: Update link
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: https://drive.google.com/file/d/1DrES5qI7wVtj3TKrN-3tMRAqR2K3enKV/view?usp=drive_link
+
   /v:
     get:
       summary: Version info
@@ -386,4 +410,131 @@ paths:
         '200':
           $ref: '#/components/responses/GenericSuccess'
         '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/v2/manga:
+    get:
+      summary: List supported manga providers
+      parameters:
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+
+  /api/v2/manga/mangahere/{query}:
+    get:
+      summary: Search manga on MangaHere
+      parameters:
+        - name: query
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+
+  /api/v2/manga/mangahere/rankings:
+    get:
+      summary: Get MangaHere rankings
+      parameters:
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - total
+              - month
+              - week
+              - day
+            default: total
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/v2/manga/mangahere/hot:
+    get:
+      summary: Get MangaHere hot releases
+      parameters:
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+
+  /api/v2/manga/mangahere/trending:
+    get:
+      summary: Get MangaHere trending manga
+      parameters:
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+
+  /api/v2/manga/mangahere/recent-updates:
+    get:
+      summary: Get MangaHere recent updates
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+
+  /api/v2/manga/mangahere/home:
+    get:
+      summary: Get MangaHere home data
+      description: Returns `top10Today` and `top10Weekly` (limited to 10 each), plus full `hot`, `trending`, and `recentUpdates` arrays from first page.
+      parameters:
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+
+  /api/v2/manga/mangahere/info:
+    get:
+      summary: Get MangaHere manga info
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/v2/manga/mangahere/read:
+    get:
+      summary: Get MangaHere chapter pages (manga sources)
+      parameters:
+        - name: chapterId
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/AniwatchCacheExpiry'
+      responses:
+        '200':
+          $ref: '#/components/responses/GenericSuccess'
+        '400':
           $ref: '#/components/responses/ErrorResponse'

@@ -14,6 +14,8 @@ import { errorHandler, notFoundHandler } from "./config/errorHandler.js";
 import type { ServerContext } from "./config/context.js";
 
 import { hianimeRouter } from "./routes/hianime.js";
+import { mangaRouter } from "./routes/manga.js";
+import { metaRouter } from "./routes/meta.js";
 import { logging } from "./middleware/logging.js";
 import { cacheConfigSetter, cacheControl } from "./middleware/cache.js";
 
@@ -47,6 +49,8 @@ app.use("/", serveStatic({ root: "public" }));
 // }
 
 app.get("/health", (c) => c.text("daijoubu", { status: 200 }));
+app.get("/app-version", (c) => c.text(env.APP_VERSION, { status: 200 }));
+app.get("/update", (c) => c.text(env.UPDATE_LINK, { status: 200 }));
 app.get("/v", async (c) =>
     c.text(
         `aniwatch-api: v${"version" in pkgJson && pkgJson?.version ? pkgJson.version : "-1"}\n` +
@@ -109,6 +113,8 @@ if (env.ENABLE_SWAGGER_UI) {
 app.use(cacheConfigSetter(BASE_PATH.length));
 
 app.basePath(BASE_PATH).route("/hianime", hianimeRouter);
+app.basePath(BASE_PATH).route("/manga", mangaRouter);
+app.basePath(BASE_PATH).route("/meta", metaRouter);
 app.basePath(BASE_PATH).get("/anicrush", (c) =>
     c.text("Anicrush could be implemented in future.")
 );
