@@ -1,4 +1,5 @@
 import https from "https";
+import { readFile } from "node:fs/promises";
 
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
@@ -52,6 +53,58 @@ app.get("/v", async (c) =>
             `aniwatch-package: v${"dependencies" in pkgJson && pkgJson?.dependencies?.aniwatch ? pkgJson?.dependencies?.aniwatch : "-1"}`
     )
 );
+
+if (env.ENABLE_SWAGGER_UI) {
+    const openApiSpecUrl = "/docs/openapi.yaml";
+    const swaggerHtml = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Aniwatch API Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/docs/swagger-ui.css" />
+    <style>
+      html, body { margin: 0; padding: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="/docs/swagger-ui-bundle.js"></script>
+    <script src="/docs/swagger-ui-standalone-preset.js"></script>
+    <script>
+      window.ui = SwaggerUIBundle({
+        url: "${openApiSpecUrl}",
+        dom_id: "#swagger-ui",
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        layout: "StandaloneLayout"
+      });
+    </script>
+  </body>
+</html>`;
+
+    app.get("/docs", (c) => c.html(swaggerHtml));
+    app.get("/docs/", (c) => c.html(swaggerHtml));
+    app.get(openApiSpecUrl, async (c) => {
+        const spec = await readFile(
+            new URL("../docs/openapi.yaml", import.meta.url),
+            "utf8"
+        );
+        return c.text(spec, {
+            status: 200,
+            headers: { "Content-Type": "application/yaml" },
+        });
+    });
+    app.use(
+        "/docs/*",
+        serveStatic({
+            root: "node_modules/swagger-ui-dist",
+            rewriteRequestPath: (path) => path.replace(/^\/docs/, ""),
+        })
+    );
+}
 
 app.use(cacheConfigSetter(BASE_PATH.length));
 

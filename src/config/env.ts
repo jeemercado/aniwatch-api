@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import { cleanEnv, num, str, url, port } from "envalid";
+import { cleanEnv, num, str, url, port, bool } from "envalid";
 
 config();
 
@@ -80,6 +80,11 @@ export const env = cleanEnv(process.env, {
         choices: ["development", "production", "test", "staging"],
         desc: "The environment in which the application is running.",
         docs: "https://nodejs.org/en/learn/getting-started/nodejs-the-difference-between-development-and-production",
+    }),
+
+    ENABLE_SWAGGER_UI: bool({
+        default: false,
+        desc: "Enable Swagger UI at /docs and serve the OpenAPI spec in development or local environments.",
     }),
 });
 
