@@ -1,0 +1,33 @@
+diff --git a/node_modules/aniwatch/LICENSE b/node_modules/aniwatch/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/node_modules/aniwatch/README.md b/node_modules/aniwatch/README.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/aniwatch/dist/index.d.ts b/node_modules/aniwatch/dist/index.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/aniwatch/dist/index.js b/node_modules/aniwatch/dist/index.js
+old mode 100644
+new mode 100755
+index c29a83c..2a09668
+--- a/node_modules/aniwatch/dist/index.js
++++ b/node_modules/aniwatch/dist/index.js
+@@ -23,7 +23,7 @@ import axios, { AxiosError } from "axios";
+ var ACCEPT_ENCODING_HEADER = "gzip, deflate, br";
+ var USER_AGENT_HEADER = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+ var ACCEPT_HEADER = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+-var DOMAIN = "hianimez.to";
++var DOMAIN = "aniwatchtv.to";
+ var SRC_BASE_URL = `https://${DOMAIN}`;
+ var SRC_AJAX_URL = `${SRC_BASE_URL}/ajax`;
+ var SRC_HOME_URL = `${SRC_BASE_URL}/home`;
+@@ -427,7 +427,7 @@ async function getMegaCloudClientKey(xrax) {
+   try {
+     const req = await fetch(
+       `https://megacloud.blog/embed-2/v3/e-1/${xrax}`,
+-      { headers: { Referer: "https://hianime.to/" } }
++      { headers: { Referer: "https://aniwatchtv.to/" } }
+     );
+     text = await req.text();
+     let regex = [
